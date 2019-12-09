@@ -1,7 +1,7 @@
 Load Dow Jones DNA Snapshot to Elasticsearch
 ############################################
 
-Sample code to read data from snapshot files, enrich articles metadata, and import the output into Elasticsearch. It uses some methods created in a common library (`djdna_common <http://localhost>`_) included as a symbolic link.
+Sample code to read data from snapshot files, enrich articles metadata, and import the output into Elasticsearch. It uses some methods created in a common library (`djdna_common <https://github.com/miballe/djdna_common>`_) included as a symbolic link.
 
 
 djdna_common
@@ -9,10 +9,13 @@ djdna_common
 
 Set of common methods that eases operations like reading DNA Snapshots AVRO files, calculating new features or interacting with Elasticsearch. These methods are for illustration purposes and don't have a robust coding to validate unexpected cases or handling exceptions. For this reason it is not distributed as a Python package. It is however used among multiple Dow Jones DNA examples.
 
-To use these methods, clone the djdna_common repository to a directory parallel to this project, and create a symbolic link with a command like this:
+To use these methods, clone this and the djdna_common repository to the same base directory, and create a symbolic link. A sample sequence looks like this:
 
 .. code-block::
 
+    $ git clone https://github.com/miballe/djdna-snapshot2elasticsearch.git
+    $ git clone https://github.com/miballe/djdna_common
+    $ cd djdna-snapshot2elasticsearch
     $ ln -s ../djdna_common/ djdna_common
 
 
