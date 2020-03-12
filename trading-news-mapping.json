@@ -203,6 +203,9 @@
             "textblob_sentiment_polarity": {
                 "type": "float"
             },
+            "textblob_sentiment_score": {
+                "type": "float"
+            },
             "textblob_sentiment_subjectivity": {
                 "type": "float"
             },
