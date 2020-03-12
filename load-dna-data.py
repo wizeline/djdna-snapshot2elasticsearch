@@ -17,7 +17,7 @@ for filename in sorted(os.listdir(articles_folder)):
     compny_articles['body'] = compny_articles[['body']].apply(lambda x: '{}'.format(x[0]), axis=1)
     compny_articles['all'] = compny_articles['title'] + compny_articles['body']
     # compny_articles['body'] = compny_articles['body']
-    compny_articles = compny_articles.iloc[:2500]
+    # compny_articles = compny_articles.iloc[:2500]
     print("Done!\nEnriching title...", end='')
 
     # Enrich by adding an embedding to the title and body fields
