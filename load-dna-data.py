@@ -4,7 +4,7 @@ import djdna_common.elasticsearch as dna_es
 import djdna_common.enrichment as dna_ech
 
 # This code asumes no authentication is enabled in ES
-articles_folder = "./data/"
+articles_folder = config.local_data_path
 es_url = config.elasticsearch_host
 es_index = config.elasticsearch_index
 corenlp_host = config.corenlp_host

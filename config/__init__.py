@@ -11,3 +11,4 @@ def load_env_config_value(config_key):
 elasticsearch_host = load_env_config_value("ELASTICSEARCH_HOST")
 elasticsearch_index = load_env_config_value("ELASTICSEARCH_INDEX")
 corenlp_host = load_env_config_value("CORENLP_HOST")
+local_data_path = load_env_config_value("LOCAL_DATA_PATH")
