@@ -18,8 +18,6 @@ with open('config/companies.json') as config_file:
     config_data = json.load(config_file)
     companies = { company['code'] : company for company in config_data['companies'] }
     terms = config_data['terms']
-# companies = 
-# terms = []
 
 external_stylesheets = [dbc.themes.BOOTSTRAP]
 
