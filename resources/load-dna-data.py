@@ -9,15 +9,18 @@ es_url = config.elasticsearch_host
 es_index = config.elasticsearch_index
 corenlp_host = config.corenlp_host
 
+print("Starting")
+
 for filename in sorted(os.listdir(articles_folder)):
-    print("Reading file {}...".format(filename), end='')
+    print("Reading file {}...".format(filename))
     # Loads multiple AVRO file articles to a single Pandas DataFrame
     file_articles = dna_ssf.read_file(articles_folder + filename, only_stats=False)
+    print('Here!')
     compny_articles = file_articles[file_articles['company_codes_about'].ne('')].copy()
     compny_articles['body'] = compny_articles[['body']].apply(lambda x: '{}'.format(x[0]), axis=1)
     compny_articles['all'] = compny_articles['title'] + compny_articles['body']
-    # compny_articles['body'] = compny_articles['body']
-    # compny_articles = compny_articles.iloc[:2500]
+    compny_articles['body'] = compny_articles['body']
+    compny_articles = compny_articles.iloc[:2500]
     print("Done!\nEnriching title...", end='')
 
     # Enrich by adding an embedding to the title and body fields
