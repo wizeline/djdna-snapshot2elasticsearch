@@ -1,4 +1,7 @@
-from elasticsearch import Elasticsearch
+from elasticsearch import Elasticsearch, ElasticsearchException
+
+class SearchError(Exception):
+    pass
 
 class SearchClient():
     
@@ -6,7 +9,7 @@ class SearchClient():
         self.elastic_client = Elasticsearch([elastic_host])
         self.index_name = index_name
 
-    def termSearch(self, keywords, company):
+    def term_search(self, keywords, company):
         query = {
             "query": { 
                 "bool" : {
@@ -23,10 +26,14 @@ class SearchClient():
             "size" : "2500"
         }
 
-        res = self.elastic_client.search(index=self.index_name, body=query)
-        return res['hits']
+        try:
+            res = self.elastic_client.search(index=self.index_name, body=query)
+            return res['hits']
+
+        except ElasticsearchException:
+            raise SearchError
     
-    def companySearch(self, company):
+    def company_search(self, company):
         query = {
             "query" : {
                 "match" : {
@@ -36,10 +43,14 @@ class SearchClient():
             "size" : "2500"
         }
 
-        res = self.elastic_client.search(index=self.index_name, body=query)
-        return res['hits']
+        try:
+            res = self.elastic_client.search(index=self.index_name, body=query)
+            return res['hits']
+        
+        except ElasticsearchException:
+            raise SearchError
 
-    def termCount(self, term, company):
+    def term_count(self, term, company):
         query = {
             "query": { 
                 "bool" : {
@@ -55,10 +66,8 @@ class SearchClient():
             }
         }
 
-        res = self.elastic_client.count(index=self.index_name, body=query)
-
-        return res['count']
-
-
-    
-
+        try:
+            res = self.elastic_client.count(index=self.index_name, body=query)
+            return res['count']
+        except ElasticsearchException:
+            raise SearchError
