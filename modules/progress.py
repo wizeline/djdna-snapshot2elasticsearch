@@ -9,8 +9,8 @@ class Progress():
     def create(self):
         return html.Div([
                 dbc.Row([
-                    dbc.Col(self.label.capitalize(), width=1, style={ 'textAlign':'right'}),
-                    dbc.Col(dbc.Progress(id=self.label), width=4),
+                    dbc.Col(self.label.capitalize(), width=2, style={ 'textAlign':'right', 'padding-top':'0.5%'}),
+                    dbc.Col(dbc.Progress(id=self.label), width=8, style={'padding-top' : '1%'})
                 ])
             ]
         )

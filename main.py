@@ -53,7 +53,13 @@ app.layout = html.Div(
                 placeholder='Search terms'
             ),
         ], className='mb-3'),
-        html.Div([ Progress(term, 0).create() for term in terms ]),
+        dbc.Row([
+            dbc.Col(html.Div([ Progress(term, 0).create() for term in terms ]), width=6),
+            dbc.Col([
+                html.H5('Credit risk score'),
+                html.Div(id='companies_score'),
+            ], width=6 )
+        ]),
         dcc.Graph(id='article_count_graph'),
         html.H3('Top hits'),
         dbc.ListGroup(id='article_list',  className='mb-3')
@@ -67,11 +73,12 @@ set_toggle_modal(app)
     [
         Output('error', 'is_open'),
         Output('article_count_graph', 'figure'), 
-        Output('article_list', 'children')
+        Output('article_list', 'children'),
+        Output('companies_score', 'children')
     ] + [Output(term, 'value') for term in terms],
     [ Input('company', 'value'), Input('search_input', 'value') ]
 )
-def update_figure(selected_companies, search_terms):
+def update_figure(selected_companies, search_terms, *args):
     selected_companies = [ selected_companies ] if isinstance(selected_companies, str) else selected_companies
     companies_to_search = ' '.join(selected_companies)
 
@@ -79,9 +86,22 @@ def update_figure(selected_companies, search_terms):
     try:
         company_all_articles = search_client.company_search(companies_to_search)
     except SearchError:
-        return (True, go.Figure(), [], *([0] * len(terms)) )
+        return (True, go.Figure(), [], [], *([0] * len(terms)) )
 
     company_df = data_handling.get_article_count_per_day(company_all_articles['hits'])
+
+    # Calculate risk score
+    sentiment_result = [ ]
+    for company in selected_companies:
+        company_articles = search_client.company_search(company)
+        sentiment_result.append(
+            html.P(
+                '{} : {:.2f}'.format(
+                    companies[company]['name'], 
+                    data_handling.get_sentiment_average(company_articles['hits'])
+                ) 
+            )
+        )
 
     resulting_articles = [ 
         ListItem( 
@@ -96,7 +116,7 @@ def update_figure(selected_companies, search_terms):
         go.Bar(
             x=company_df['date'], 
             y=company_df['count'], 
-            name='Total articles'
+            name='Total articles',
         )
     )
     
@@ -105,7 +125,7 @@ def update_figure(selected_companies, search_terms):
     try:
         term_values = [ search_client.term_count(term, companies_to_search)*100/total_articles for term in terms ]
     except (SearchError, ZeroDivisionError):
-        return (True, go.Figure(), [], *([0] * len(terms)) )
+        return (True, go.Figure(), [], sentiment_result, *([0] * len(terms)) )
 
     # Get the stock information
     for index, company in enumerate(selected_companies):
@@ -123,7 +143,7 @@ def update_figure(selected_companies, search_terms):
         try:
             search_results = search_client.term_search(search_terms, companies_to_search)
         except SearchError:
-            return (True, fig, resulting_articles, *term_values)
+            return (True, fig, resulting_articles, sentiment_result, *term_values)
 
         df = data_handling.get_article_count_per_day(search_results['hits'])
         resulting_articles = [ 
@@ -142,7 +162,7 @@ def update_figure(selected_companies, search_terms):
             )
         )
 
-    return (False, fig, resulting_articles, *term_values)
+    return (False, fig, resulting_articles, sentiment_result, *term_values)
 
 if __name__ == '__main__':
 	app.run_server(debug=True)
