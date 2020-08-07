@@ -9,18 +9,18 @@ class SearchClient():
         self.elastic_client = Elasticsearch([elastic_host])
         self.index_name = index_name
 
-    def term_search(self, keywords, company):
+    def term_search(self, keywords, companies):
         query = {
             "query": { 
                 "bool" : {
-                    "must" : {
-                        "multi_match" : {
-                            "query": keywords, "fields": [ "title","body"] 
-                        }
-                    },
-                    "filter": {
-                        "term": { "company_codes": company }
-                    }
+                    "must" : [
+                       {
+                            "multi_match" : {
+                               "query": keywords, "fields": [ "title","body"]
+                            },
+                       },
+                        { "match" : { "company_codes": companies } }
+                    ]
                 }
             },
             "size" : "2500"
@@ -33,11 +33,11 @@ class SearchClient():
         except ElasticsearchException:
             raise SearchError
     
-    def company_search(self, company):
+    def company_search(self, companies):
         query = {
             "query" : {
                 "match" : {
-                    "company_codes" : company
+                    "company_codes" : companies
                 }
             },
             "size" : "2500"
@@ -50,18 +50,18 @@ class SearchClient():
         except ElasticsearchException:
             raise SearchError
 
-    def term_count(self, term, company):
+    def term_count(self, term, companies):
         query = {
             "query": { 
                 "bool" : {
-                    "must" : {
-                        "multi_match" : {
-                            "query": term, "fields": [ "title","body"] 
-                        }
-                    },
-                    "filter": {
-                        "term": { "company_codes": company }
-                    }
+                   "must" : [
+                        { 
+                            "multi_match" : 
+                                { "query": term, "fields":[ "title","body"]
+                            },
+                        },
+                        { "match" : { "company_codes": companies } }
+                    ]
                 }
             }
         }

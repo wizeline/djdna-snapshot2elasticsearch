@@ -24,6 +24,8 @@ with open('config/companies.json') as config_file:
 
 external_stylesheets = [dbc.themes.BOOTSTRAP]
 
+color_pool = ['navy', 'blue', 'purple', 'pink', 'indigo', 'slateblue', 'turqouise', 'chocolate', 'cyan', 'hotpink']
+
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = html.Div(
@@ -31,13 +33,16 @@ app.layout = html.Div(
 	children = [
         html.H2('Travel monitoring'),
         dbc.Alert('A search error has ocurred', color='danger', is_open=False, id='error'),
-        dbc.InputGroup([
-            dbc.InputGroupAddon('Select a company', addon_type='prepend'),
-            dbc.Select(
-                id='company',
-                options=[ { 'label': companies[company]['name'], 'value' : companies[company]['code']  } for company in companies.keys() ],
-                value=list(companies.keys())[0]
-            )
+        dbc.FormGroup([
+            
+            dbc.Label('Select companies', html_for='company'),
+            dcc.Dropdown(
+                options = [ { 'label': companies[company]['name'], 'value' : companies[company]['code']  } for company in companies.keys() ],
+                value=list(companies.keys())[0],
+                multi=True,
+                id='company'
+            ),
+        
         ], className='mb-3'),
         dbc.InputGroup([
             dbc.InputGroupAddon('Search', addon_type='prepend'),
@@ -66,10 +71,13 @@ set_toggle_modal(app)
     ] + [Output(term, 'value') for term in terms],
     [ Input('company', 'value'), Input('search_input', 'value') ]
 )
-def update_figure(selected_company, search_terms):
+def update_figure(selected_companies, search_terms):
+    selected_companies = [ selected_companies ] if isinstance(selected_companies, str) else selected_companies
+    companies_to_search = ' '.join(selected_companies)
+
     ## Search for all the news of a company:
     try:
-        company_all_articles = search_client.company_search(selected_company)
+        company_all_articles = search_client.company_search(companies_to_search)
     except SearchError:
         return (True, go.Figure(), [], *([0] * len(terms)) )
 
@@ -95,24 +103,25 @@ def update_figure(selected_company, search_terms):
     # Get the term information
     total_articles = company_all_articles['total']['value']
     try:
-        term_values = [ search_client.term_count(term, selected_company)*100/total_articles for term in terms ]
+        term_values = [ search_client.term_count(term, companies_to_search)*100/total_articles for term in terms ]
     except (SearchError, ZeroDivisionError):
         return (True, go.Figure(), [], *([0] * len(terms)) )
 
     # Get the stock information
-    if companies[selected_company].get('ticker', 0) != 0:
-        company_stocks = stock_handling.get_ticker_stocks(companies[selected_company]['ticker'])
-        fig.add_trace(
-            go.Scatter(
-                x=data_handling.transform_dates(company_stocks.index.values), y=company_stocks['High'], 
-                name='Stock value',
-                line=dict(color='blue')
+    for index, company in enumerate(selected_companies):
+        if 'ticker' in companies[company]:
+            company_stocks = stock_handling.get_ticker_stocks(companies[company]['ticker'])
+            fig.add_trace(
+                go.Scatter(
+                    x=data_handling.transform_dates(company_stocks.index.values), y=company_stocks['High'], 
+                    name='{} stock value'.format(companies[company]['name']),
+                    line=dict(color=color_pool[index])
+                )
             )
-        )
     
     if search_terms:
         try:
-            search_results = search_client.term_search(search_terms, selected_company)
+            search_results = search_client.term_search(search_terms, companies_to_search)
         except SearchError:
             return (True, fig, resulting_articles, *term_values)
 
