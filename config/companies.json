@@ -1,0 +1,53 @@
+{
+    "companies": [
+        {
+            "name": "Airbnb",
+            "code": "airbab"
+        },
+        {
+            "name": "American Airlines",
+            "code": "amair",
+            "ticker": "AAL"
+        }, 
+        {
+            "name": "Hertz",
+            "code": "hoeznj",
+            "ticker": "HTZ"
+        },
+        {
+            "name": "Expedia",
+            "code": "expdia",
+            "ticker": "EXPE"
+        },
+        {
+            "name": "Rakuten",
+            "code": "ratrvo",
+            "ticker": "RKUNY"
+        },
+        {
+            "name": "Trip Advisor",
+            "code": "tadvis",
+            "ticker": "TRIP"
+        },
+        {
+            "name": "Lufthansa",
+            "code": "lfthns",
+            "ticker": "LHA"
+        },
+        {
+            "name": "American Express",
+            "code": "amexpr",
+            "ticker": "AXP"
+        },
+        {
+            "name": "Disney",
+            "code": "dsnyw",
+            "ticker": "DIS"
+        },
+        {
+            "name": "Best day",
+            "code": "olbirf"
+        }
+    ],
+    "terms" : ["debt", "layoffs", "loan", "stocks"]
+}
