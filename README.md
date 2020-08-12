@@ -43,12 +43,31 @@ Additional files are included to create and download snapshots files, and to loa
 
 2. Create a snapshot and download the resulting articles. 
 
-    - If you don't have a created snapshot, you can use the `create-snapshot.py` file. Add your query to this file. This will create the snapshot and download the files.
+    - If you don't have a created snapshot, add your query to the `resources/create-snapshot.py`. Then run: 
+    ```
+    python -m resources.create-snapshot
+    ```
+    
+    This will create the snapshot and download the files.
 
-    - If you have created snapshot you can use the `article-download.py` file. This will download the files for the `snapshot_id` specified on the `config/env.py`. 
+    - If you have created snapshot you can use:
+    ````
+    python -m resources.article-download
+    ````
 
-3. Create the elasticsearch index by running `create_index.py`. You can choose do to so manually, if so, remember to add the mapping included in `resources/files/dna-es-mappings.json`.
+    This will download the files for the `snapshot_id` specified on the `config/env.py`. 
 
-4. Load the data into elasticsearch by running `load-dna-data.py`
+
+3. Create the elasticsearch index by running 
+    ```
+    python -m resources.create-index
+    ```
+
+    You can choose do to so manually, if so, remember to add the mapping included in `resources/files/dna-es-mappings.json`.
+
+4. Load the data into elasticsearch by running 
+    ```
+    python -m resources.load-dna-data
+    ```
 
 5. Run the app with `main.py`
