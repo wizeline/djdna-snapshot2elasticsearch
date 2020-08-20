@@ -1,6 +1,6 @@
-import config
 from elasticsearch import Elasticsearch
 from elasticsearch.client import IndicesClient
+import config
 
 les = Elasticsearch([config.elasticsearch_host])
 
