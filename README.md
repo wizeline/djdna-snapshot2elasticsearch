@@ -9,11 +9,11 @@ Additional scripts are present to create and download snapshots files, as well a
 
 ## Dependencies
 
-* Library dependencies for Python.
+### Library Dependencies for Python.
 
 `requirements.txt` lists these dependencies.
 
-* [djdna_common](https://github.com/miballe/djdna_common) Library Methods
+### [djdna_common](https://github.com/miballe/djdna_common) Library Methods
 
 The **djdna_common** library is a set of widely used methods that eases operations such as reading DNA Snapshots AVRO files or interacting with Elasticsearch. The methods in the set don't have robust code to validate unexpected cases or to handle exceptions; their purpose is merely illustrative. For such reason, the library is not available as a Python package. However, it is present throughout many Dow Jones DNA examples.
 
@@ -30,7 +30,7 @@ The commands to complete this task look like the ones in the following code snip
     $ ln -s ../djdna_common/ djdna_common
     ```
 
-* [factiva_common](https://github.com/dowjones/factiva_common) Library Methods.
+### [factiva_common](https://github.com/dowjones/factiva_common) Library Methods.
 
 To leverage these methods, follow the next steps:
 1. Clone the code in the **factiva_common** repository to the same base directory
@@ -43,13 +43,13 @@ The commands to complete this task look like the ones in the following code snip
     $ ln -s ../factiva_common/ factiva_common
     ```
 
-* Elasticsearch server.
+### Elasticsearch Server.
 
 To set an Elasticsearch server, please refer to the [official documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html).
 
 Before running the application, an index needs to be created. Run the `create_index.py` script to create it. You can choose to create the index manually. If so, add the mapping that is included in `resources/files/dna-es-mappings.json`.
 
-* CoreNLP Server.
+### CoreNLP Server.
 
 The purpose of this server is to enrich the contents before loading them into Elastisearch. 
 
@@ -78,7 +78,7 @@ To set a CoreNLP Server, please refer to the [official website](https://stanford
 
 You can choose to create the index manually. If so, remember to add the mapping included in `resources/files/dna-es-mappings.json`.
 
-4. Load the data into Elasticsearch by running 
+4. Load the data into Elasticsearch by running:
     ```
     python -m resources.load-dna-data
     ```
