@@ -1,18 +1,27 @@
-# Elasticsearch Sample Dashboard
+# Elasticsearch Dashboard Example
 
+The purpose of the dashboard app in this repository is to read snapshot data loaded into Elasticsearch. The app includes the following features:
+* Plot that shows article counts per day
+* Free search
+* Article preview
 
-Sample Dash App to read snapshots data loaded into Elasticsearch. The app includes ploting article counts per day, free search and article preview.
-
-Additional files are included to create and download snapshots files, and to load and enrich the files into elasticsearch.
-
+Additional scripts are present to create and download snapshots files, as well as to load and enrich the files in Elasticsearch.
 
 ## Dependencies
-- Library dependencies for Python are listed on `requirements.txt`.
-- Methods from the [djdna_common](https://github.com/miballe/djdna_common) library are used. 
 
-    The **djdna_common** library is a set of common methods that eases operations like reading DNA Snapshots AVRO files, calculating new features or interacting with Elasticsearch. These methods are for illustration purposes and don't have a robust coding to validate unexpected cases or handling exceptions. For this reason it is not distributed as a Python package. It is however used among multiple Dow Jones DNA examples.
+### Library Dependencies for Python.
 
-    To use these methods, clone this and the djdna_common repository to the same base directory, and (if necessary) create a symbolic link or copy the folder content. A sample sequence looks like this:
+`requirements.txt` lists these dependencies.
+
+### [djdna_common](https://github.com/miballe/djdna_common) Library Methods
+
+The **djdna_common** library is a set of widely used methods that eases operations such as reading DNA Snapshots AVRO files or interacting with Elasticsearch. The methods in the set don't have robust code to validate unexpected cases or to handle exceptions; their purpose is merely illustrative. For such reason, the library is not available as a Python package. However, it is present throughout many Dow Jones DNA examples.
+
+To leverage these methods, follow the next steps:
+1. Clone the code in this repository and the code in the djdna_common repository to the same base directory.
+2. Create a symbolic link or copy the folder content.
+
+The commands to complete this task look like the ones in the following code snippet:
 
     ```
     $ git clone https://github.com/miballe/djdna-snapshot2elasticsearch.git
@@ -21,53 +30,57 @@ Additional files are included to create and download snapshots files, and to loa
     $ ln -s ../djdna_common/ djdna_common
     ```
 
-- Methods from the [factiva_common](https://github.com/dowjones/factiva_common) are used.
+### [factiva_common](https://github.com/dowjones/factiva_common) Library Methods.
 
-    To use these methods, clone the **factiva_common** repository to the same base directory, and create a symbolic link or copy the folder content, like this:
+To leverage these methods, follow the next steps:
+1. Clone the code in the **factiva_common** repository to the same base directory
+2. Create a symbolic link or copy the folder content.
+
+The commands to complete this task look like the ones in the following code snippet:
 
     ```
     $ git clone https://github.com/dowjones/factiva_common
     $ ln -s ../factiva_common/ factiva_common
     ```
 
-- Elasticsearch server. To set an elasticsearch server please refer to [the official documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html).
+### Elasticsearch Server.
 
-    It is required to create an index before running the application. You can run the `create_index.py` to create it. You can choose to do it manually, if so, remember to add the mapping included in `resources/files/dna-es-mappings.json`.
+To set an Elasticsearch server, please refer to the [official documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html).
 
-- CoreNLP Server. This server is used to enrich the contents before loading them into elastisearch. Please refer to the [official website](https://stanfordnlp.github.io/CoreNLP/corenlp-server.html) to gather information on setting it up.
+Before running the application, an index needs to be created. Run the `create_index.py` script to create it. You can choose to create the index manually. If so, add the mapping that is included in `resources/files/dna-es-mappings.json`.
 
+### CoreNLP Server.
+
+The purpose of this server is to enrich the contents before loading them into Elastisearch. 
+
+To set a CoreNLP Server, please refer to the [official website](https://stanfordnlp.github.io/CoreNLP/corenlp-server.html).
 
 ## Running the application
 
 1. Fill out the `config/env.py` file.
 
-2. Create a snapshot and download the resulting articles. 
+2. Set up the desired snapshot files and download the resulting articles.
 
-    - If you don't have a created snapshot, add your query to the `resources/create-snapshot.py`. Then run: 
+    1. If you don’t have a snapshot, add the query to the `resources/create-snapshot.py`. Then run the following command which will create the snapshot and download the files to your local machine: 
     ```
     python -m resources.create-snapshot
     ```
-    
-    This will create the snapshot and download the files.
 
-    - If you have created snapshot you can use:
+    2. If you have a snapshot, run the following command which will download the files for the `snapshot_id` specified on the `config/env.py` to your local machine:
     ````
     python -m resources.article-download
     ````
 
-    This will download the files for the `snapshot_id` specified on the `config/env.py`. 
-
-
-3. Create the elasticsearch index by running 
+3. Create the Elasticsearch index by running:
     ```
     python -m resources.create-index
     ```
 
-    You can choose do to so manually, if so, remember to add the mapping included in `resources/files/dna-es-mappings.json`.
+You can choose to create the index manually. If so, remember to add the mapping included in `resources/files/dna-es-mappings.json`.
 
-4. Load the data into elasticsearch by running 
+4. Load the data into Elasticsearch by running:
     ```
     python -m resources.load-dna-data
     ```
 
-5. Run the app with `main.py`
+5. Run the app with `main.py`.
