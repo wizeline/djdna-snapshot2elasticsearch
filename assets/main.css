@@ -1,0 +1,44 @@
+@font-face {
+    font-family: SimplonNorm-Regular;
+    src: url(fonts/simplon.ttf);
+}
+
+@font-face {
+    font-family: SimplonNorm-Light;
+    src: url(fonts/simplon-light.ttf);
+}
+
+:root {
+    --mdc-theme-primary: #00a3d5;
+    --mdc-theme-secondary: #39485a;
+    --mdc-theme-on-surface: #787878;
+    --mdc-typography-headline1-font-family: SimplonNorm-Light;
+    --mdc-typography-headline1-font-size: 72px;
+    --mdc-typography-subtitle1-font-family: SimplonNorm-Regular;
+    --mdc-typography-subtitle1-font-size: 20px;
+    --mdc-typography-subtitle1-font-weight: 100px;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before {
+    border-bottom-color: var(--mdc-theme-primary);
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled):hover .mdc-line-ripple::before {
+    border-bottom-color: var(--mdc-theme-primary);
+}
+
+.mdc-text-field--fullwidth:not(.mdc-text-field--textarea):not(.mdc-text-field--disabled) {
+    background-color: #f5f5f5;
+}
+
+.mdc-text-field--filled {
+    height: 40px;
+}
+
+.mdc-divider-top {
+    border-top: 1px solid var(--mdc-theme-secondary);
+}
+
+.mdc-divider-bottom {
+    border-bottom: 1px solid var(--mdc-theme-secondary);
+}
