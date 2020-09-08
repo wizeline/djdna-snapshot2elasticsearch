@@ -26,7 +26,8 @@ def get_risk_term_layout(companies, selected_companies, terms, terms_values, ter
                 html.Div([
                     html.Div(
                         companies[company_code]['name'], 
-                        className='mdc-layout-grid__cell--span-2'
+                        className='mdc-layout-grid__cell--span-2',
+                        style={ 'white-space': 'nowrap', 'overflow': 'hidden', 'text-overflow': 'ellipsis' }
                     ) for company_code in selected_companies
                 ], className='mdc-layout-grid__inner')
             ], className='mdc-layout-grid__cell--span-6'),
