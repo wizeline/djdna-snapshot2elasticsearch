@@ -15,7 +15,7 @@ import modules.layout.search_filters as SearchFilters
 import modules.layout.footer as Footer
 import modules.layout.article_list as ArticleList
 
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 from modules.search_client import SearchClient, SearchError
 from modules.ui.modal import set_toggle_modal, Modal
 
@@ -85,9 +85,10 @@ def get_risk_term_section(selected_companies):
    
 @app.callback(
     Output('article_count_graph', 'figure'), 
-    [ Input('company-filter', 'value'), Input('search_input', 'value') ]
+    [ Input('company-filter', 'value'), Input('search_button', 'n_clicks') ],
+    [ State('search_input', 'value') ]
 )
-def update_figure(selected_companies, search_terms):
+def update_figure(selected_companies, n_clicks, search_terms):
     if isinstance(selected_companies, str):
         selected_companies = [ selected_companies ]
 
@@ -139,9 +140,10 @@ def update_figure(selected_companies, search_terms):
 
 @app.callback(
     Output('article_list', 'children'),
-    [ Input('company-filter', 'value'), Input('search_input', 'value') ]
+    [ Input('company-filter', 'value'), Input('search_button', 'n_clicks') ],
+    [ State('search_input', 'value') ]
 )
-def update_article_list(selected_companies, search_terms):
+def update_article_list(selected_companies, n_clicks, search_terms):
     if isinstance(selected_companies, str):
         selected_companies = [ selected_companies ]
 
