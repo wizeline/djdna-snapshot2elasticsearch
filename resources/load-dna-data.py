@@ -28,7 +28,7 @@ for filename in sorted(os.listdir(articles_folder)):
     print("Done!\nEnriching All...", end='')
     enriched_articles = dna_ech.add_embedding(enriched_articles, 'all')
     print("Done!\nCalculating CoreNLP Sentiment...", end='')
-    enriched_articles = dna_ech.add_corenlp_sentiment(enriched_articles, 'all', corenlp_host)
+    # enriched_articles = dna_ech.add_corenlp_sentiment(enriched_articles, 'all', corenlp_host)
     print("Done!\nCalculating TextBlob Sentiment...", end='')
     enriched_articles = dna_ech.add_textblob_sentiment(enriched_articles, 'all')
     print("Done!\nLoading to Elasticsearch...", end='')
