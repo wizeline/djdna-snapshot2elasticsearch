@@ -9,6 +9,14 @@ container = (
     ])
 )
 
+load_more_button = (
+    html.Div([
+        html.Button([
+                html.Span('LOAD MORE', className='mdc-button__label')
+            ], className='mdc-button mdc-button--raised', id='load_more_button')
+    ], className='mdc-layout-grid__cell--span-12', style={ 'text-align' : 'center', 'padding' : '30px'})
+)
+
 def create_article_list_layout(article_list):
     return html.Ul([
             html.Li([

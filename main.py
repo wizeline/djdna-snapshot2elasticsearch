@@ -45,7 +45,8 @@ app.layout = html.Div([
                 dcc.Graph(id='article_count_graph')
             ], className='mdc-layout-grid__cell--span-12'),
             html.Div([
-                ArticleList.container
+                ArticleList.container,
+                ArticleList.load_more_button
             ], className='mdc-layout-grid__cell--span-12')
         ], className='mdc-layout-grid__inner'),
         Footer.footer
@@ -140,22 +141,27 @@ def update_figure(selected_companies, n_clicks, search_terms):
 
 @app.callback(
     Output('article_list', 'children'),
-    [ Input('company-filter', 'value'), Input('search_button', 'n_clicks') ],
+    [ Input('company-filter', 'value'), Input('search_button', 'n_clicks'), Input('load_more_button', 'n_clicks') ],
     [ State('search_input', 'value') ]
 )
-def update_article_list(selected_companies, n_clicks, search_terms):
+def update_article_list(selected_companies, search_clicks, load_count_clicks, search_terms):
     if isinstance(selected_companies, str):
         selected_companies = [ selected_companies ]
 
     companies_to_search = ' '.join(selected_companies)
 
     article_list = []
+        
+    if load_count_clicks is None:
+        load_count_clicks = 0
+
+    articles_to_load = 10 * (1 + load_count_clicks)
 
     try:
         if search_terms is None:
-            article_list = search_client.company_search(companies_to_search)
+            article_list = search_client.company_search(companies_to_search, articles_to_load)
         else:
-            article_list = search_client.term_search(search_terms, companies_to_search)
+            article_list = search_client.term_search(search_terms, companies_to_search, articles_to_load)
         
     except SearchError:
         return 'An error ocurred'

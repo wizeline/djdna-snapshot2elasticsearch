@@ -70,7 +70,7 @@ class SearchClient():
         res = self.execute_search(query)
         return res['aggregations']['count_per_day']['buckets']
 
-    def term_search(self, keywords, companies):
+    def term_search(self, keywords, companies, size):
         query = {
             "query": { 
                 "bool" : {
@@ -80,17 +80,17 @@ class SearchClient():
                     ]
                 }
             },
-            "size" : "10"
+            "size" : size
         }
 
         res = self.execute_search(query)
         return res['hits']['hits']
 
     
-    def company_search(self, companies):
+    def company_search(self, companies, size):
         query = {
             'query' : { 'match' : { 'company_codes' : companies } },
-            'size' : '10'
+            'size' : size
         }
 
         res = self.execute_search(query)
