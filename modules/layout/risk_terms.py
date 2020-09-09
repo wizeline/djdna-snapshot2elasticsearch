@@ -47,7 +47,11 @@ def get_risk_term_layout(companies, selected_companies, terms, terms_values, ter
                             html.Div([
                                 html.Div(
                                     '{:.2f}'.format(terms_information[term]['sentiment'][company_code]),
-                                    className='mdc-layout-grid__cell--span-2', style={'text-align' : 'center'}
+                                    className='mdc-layout-grid__cell--span-2', 
+                                    style={
+                                        'text-align' : 'center',
+                                        'color' : 'red' if terms_information[term]['percentage'] < 0 else 'green'
+                                    },
                                 ) for company_code in selected_companies
                             ], className='mdc-layout-grid__inner')
                         ], className='mdc-layout-grid__cell--span-6')
