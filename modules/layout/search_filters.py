@@ -5,7 +5,7 @@ search_bar = (
     html.Div([
         html.Div([
             html.Label('Search for terms in the news', className='mdc-typography--subtitle1 mdc-theme--secondary'),
-        ], className='mdc-layout-grid__cell--span-12'),
+        ], className='mdc-layout-grid__cell--span-12', style={ 'padding-top' : '10px'}),
         html.Div([
             html.Label([
                 html.I('search', className='material-icons mdc-text-field__icon mdc-text-field__icon--leading mdc-theme--primary', tabIndex='0', role='button'),
@@ -25,8 +25,10 @@ search_bar = (
 def create_company_select(companies):
     return html.Div([
         html.Label(
-        'Select the companies to monitor in the news', 
-        className='mdc-typography--subtitle1 mdc-theme--secondary'),
+            'Select the companies to monitor in the news', 
+            className='mdc-typography--subtitle1 mdc-theme--secondary',
+            style={ 'padding-bottom' : '5px'}
+        ),
         dcc.Dropdown(
             options = [ { 'label': companies[company]['name'], 'value' : companies[company]['code']  } for company in companies.keys() ],
             value=list(companies.keys())[0],

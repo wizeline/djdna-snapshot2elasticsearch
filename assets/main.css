@@ -17,6 +17,7 @@
     --mdc-typography-subtitle1-font-family: SimplonNorm-Regular;
     --mdc-typography-subtitle1-font-size: 20px;
     --mdc-typography-subtitle1-font-weight: 100px;
+    --mdc-layout-grid-gutter-desktop: 12px;
 }
 
 .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before {
