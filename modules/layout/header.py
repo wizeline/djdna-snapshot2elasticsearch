@@ -21,7 +21,7 @@ logo_header = (
 title = (
     html.Div([
         html.H1(
-            'Travel Monitoring', 
+            'Company Risk Monitoring', 
             className='mdc-typography--headline1 mdc-theme--primary', 
             style={'margin' : 0}),
     ])

@@ -7,6 +7,16 @@ The purpose of the dashboard app in this repository is to read snapshot data loa
 
 Additional scripts are present to create and download snapshots files, as well as to load and enrich the files in Elasticsearch.
 
+## Overview
+#### General view
+<img src="screenshots/main_view.png" align-text="center" width="600" />
+
+#### Top hits view
+<img src="screenshots/top_hits.png" align-text="center" width="600" />
+
+#### Article preview
+<img src="screenshots/article_preview.png" align-text="center" width="600" />
+
 ## Dependencies
 
 ### Library Dependencies for Python.
