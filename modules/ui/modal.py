@@ -12,7 +12,7 @@ class Modal:
   def create(self):
     return dbc.Modal([
             dbc.ModalHeader(self.title),
-            dbc.ModalBody(self.body),
+            dbc.ModalBody(self.body, style={'text-align' : 'justify', 'white-space' : 'pre-line'}),
             dbc.ModalFooter(
                 html.Button([
                     html.Span('CLOSE', className='mdc-button__label')

@@ -34,4 +34,5 @@ def create_article_list_layout(article_list):
         ], className='mdc-list mdc-list--two-line mdc-divider-top')
 
 def get_publication_date(date):
-    return str(datetime.fromtimestamp(date/1000))
+    formatted_date = datetime.fromtimestamp(date/1000)
+    return formatted_date.strftime('%b %d %Y %I:%M %p')
