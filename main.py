@@ -46,7 +46,8 @@ app.layout = html.Div([
             ], className='mdc-layout-grid__cell--span-12'),
             html.Div([
                 ArticleList.container,
-                ArticleList.load_more_button
+                ArticleList.load_more_button,
+                ArticleList.back_to_top_button
             ], className='mdc-layout-grid__cell--span-12')
         ], className='mdc-layout-grid__inner'),
         Footer.footer

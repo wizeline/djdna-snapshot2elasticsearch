@@ -36,12 +36,8 @@
     height: 40px;
 }
 
-.mdc-divider-top {
-    border-top: 1px solid #C0C8D1;
-}
-
 .mdc-divider-bottom {
-    border-bottom: 1px solid #C0C8D1;
+    border-bottom: 1px solid #E8E8E8;
 }
 
 .Select--multi .Select-value {

@@ -7,6 +7,7 @@ def load_image(image_path):
 
 logo_header = (
     html.Div([
+        html.A(id='top', className='mdc-layout-grid__cell--span-12'),
         html.Div([ 
             html.Img(
                 src=load_image('./resources/images/dev_platform_one_line_full_color.svg'), width='345px')
