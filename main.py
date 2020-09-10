@@ -37,13 +37,13 @@ app.layout = html.Div([
             html.Div([
                 SearchFilters.create_company_select(companies),
                 SearchFilters.search_bar,
-            ], className='mdc-layout-grid__cell--span-6 mdc-layout-grid__cell--align-middle'),
+            ], className='mdc-layout-grid__cell--span-6'),
             html.Div([
                 RiskTerms.container
             ], className='mdc-layout-grid__cell--span-6'),
             html.Div([
                 dcc.Graph(id='article_count_graph')
-            ], className='mdc-layout-grid__cell--span-12'),
+            ], className='mdc-layout-grid__cell--span-12', style={'margin-top' : '42px'}),
             html.Div([
                 ArticleList.container,
                 ArticleList.load_more_button,
@@ -170,4 +170,4 @@ def update_article_list(selected_companies, search_clicks, load_count_clicks, se
     return ArticleList.create_article_list_layout(article_list)
 
 if __name__ == '__main__':
-	app.run_server(debug=True)
+	app.run_server()

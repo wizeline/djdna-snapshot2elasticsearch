@@ -24,6 +24,7 @@ title = (
         html.H1(
             'Company Risk Monitoring', 
             className='mdc-typography--headline1 mdc-theme--primary', 
-            style={'margin' : 0}),
+            style={'margin-top' : '64px'}
+        ),
     ])
 )

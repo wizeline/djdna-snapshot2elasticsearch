@@ -19,7 +19,7 @@ search_bar = (
                 html.Span('SEARCH', className='mdc-button__label')
             ], className='mdc-button mdc-button--raised', style={'display' : 'flex', 'width' : '100%'}, id='search_button')
         ], className='mdc-layout-grid__cell--span-2-desktop mdc-layout-grid__cell--span-12-tablet'),
-    ], className='mdc-layout-grid__inner')
+    ], className='mdc-layout-grid__inner', style={'margin-top' : '25px'})
 )
 
 def create_company_select(companies):
