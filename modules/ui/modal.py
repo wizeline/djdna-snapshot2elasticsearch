@@ -1,4 +1,5 @@
 import dash_bootstrap_components as dbc
+import dash_html_components as html
 
 from dash.dependencies import Output, Input, State, MATCH
 
@@ -11,9 +12,11 @@ class Modal:
   def create(self):
     return dbc.Modal([
             dbc.ModalHeader(self.title),
-            dbc.ModalBody(self.body),
+            dbc.ModalBody(self.body, style={'text-align' : 'justify', 'white-space' : 'pre-line'}),
             dbc.ModalFooter(
-                dbc.Button('Close', id={'index': self.index, 'role': 'close'}, className='ml-auto')
+                html.Button([
+                    html.Span('CLOSE', className='mdc-button__label')
+                ], className='mdc-button mdc-button--raised', id={'index' : self.index, 'role' : 'close'}),
             )
         ],
         id={'index': self.index, 'role': 'modal'},

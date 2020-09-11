@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="85" height="25" viewBox="0 0 85 25">
+  <g fill="none" fill-rule="evenodd" transform="translate(1 1)">
+    <rect width="83" height="23" fill="#FFF" stroke="#E9E9E9" rx="4"/>
+    <text fill="#39485A" font-family="Consolas" font-size="12">
+      <tspan x="5" y="15">/prototypes</tspan>
+    </text>
+  </g>
+</svg>
