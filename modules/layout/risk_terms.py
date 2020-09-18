@@ -41,16 +41,16 @@ def get_risk_term_layout(companies, selected_companies, terms, terms_values, ter
                             Progress( (terms_information[term]['percentage'])/100 ).create()
                         ], className='mdc-layout-grid__cell--span-3', style={'margin-top' : '3%'}),
                         html.Div([
-                            '{:.2f}%'.format(terms_information[term]['percentage'])
+                            format_number(terms_information[term]['percentage']) + '%'
                         ], className='mdc-layout-grid__cell--span-1'),
                         html.Div([
                             html.Div([
                                 html.Div(
-                                    '{:.2f}'.format(terms_information[term]['sentiment'][company_code]),
+                                    format_number(terms_information[term]['sentiment'][company_code]),
                                     className='mdc-layout-grid__cell--span-2', 
                                     style={
                                         'text-align' : 'center',
-                                        'color' : 'red' if terms_information[term]['percentage'] < 0 else 'green'
+                                        'color' : get_text_color(terms_information[term]['sentiment'][company_code])
                                     },
                                 ) for company_code in selected_companies
                             ], className='mdc-layout-grid__inner')
@@ -59,3 +59,17 @@ def get_risk_term_layout(companies, selected_companies, terms, terms_values, ter
                 )), className='mdc-layout-grid__inner')
             ], className='mdc-layout-grid__cell--span-12'),
         ]
+
+def format_number(number):
+    if number is None:
+        return 'N/A'
+    return '{:.2f}'.format(number)
+
+def get_text_color(number):
+    if number is None or number == 0:
+        return 'gray'
+    elif number < 0:
+        return 'red'
+    else:
+        return 'green'
+    

@@ -6,17 +6,21 @@ def load_image(image_path):
     return 'data:image/svg+xml;base64,{}'.format(encoded_image.decode())
 
 logo_header = (
-    html.Div([
-        html.A(id='top', className='mdc-layout-grid__cell--span-12'),
-        html.Div([ 
-            html.Img(
-                src=load_image('./resources/images/dev_platform_one_line_full_color.svg'), width='345px')
-            ], className='mdc-layout-grid__cell--span-6'),
+    html.Header([
         html.Div([
-            html.Img(
-                src=load_image('resources/images/dj-prototypes-logo.svg'))
-            ], className='mdc-layout-grid__cell--span-6', style={ 'textAlign' : 'right' })
-    ], className='mdc-layout-grid__inner')
+            html.Section([
+                html.Div([
+                    html.A([
+                        html.Img(
+                        src=load_image('resources/images/dev_platform_one_line_full_color.svg'), width='345px')
+                    ], id='top')
+                ]),
+            ], className='mdc-top-app-bar__section mdc-top-app-bar__section--align-start'),
+            html.Section([
+                html.Img( src=load_image('resources/images/dj-prototypes-logo.svg') )
+            ], className='mdc-top-app-bar__section mdc-top-app-bar__section--align-end', role='toolbar')
+        ], className='mdc-top-app-bar__row')
+    ], className='mdc-top-app-bar')
 )
 
 title = (

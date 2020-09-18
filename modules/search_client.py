@@ -22,12 +22,9 @@ class SearchClient():
         except ElasticsearchException:
             raise SearchError
     
-    def get_term_sentiment_average_per_company(self, term, companies):
+    def get_term_sentiment_average_per_company(self, term, companies, date_range):
         query = {
             "size": 0,
-            "query" : { 
-                "multi_match" : { "query": term, "fields":[ "title","body"] }
-            },
             "aggs": { 
                 company_code : {
                     "filter" : { "term" : { "company_codes" : company_code } },
@@ -37,11 +34,21 @@ class SearchClient():
                 } for company_code in companies
             }
         }
+
+        query['query'] = {
+                'bool' : {
+                   'must' : [
+                        { 'multi_match' : { 'query': term, 'fields':[ 'title', 'body'] } },
+                        { 'match' : { 'company_codes' : ' '.join(companies) } },
+                        { 'range' : { 'publication_date' : { 'gte': 'now-{}/d'.format(date_range)} } }
+                    ]
+                }
+            }
     
         res = self.execute_search(query)
         return { company_code : res['aggregations'][company_code]['sentiment_avg']['value'] for company_code in companies }
 
-    def get_article_count_per_day(self, companies, terms):
+    def get_article_count_per_day(self, companies, date_range, terms):
         query={
             'size' : 0,
             'aggs': {
@@ -60,23 +67,32 @@ class SearchClient():
                 'bool' : {
                    'must' : [
                         { 'multi_match' : { 'query': terms, 'fields':[ 'title', 'body'] } },
-                        { 'match' : { 'company_codes' : companies } }
+                        { 'match' : { 'company_codes' : companies } },
+                        { 'range' : { 'publication_date' : { 'gte': 'now-{}/d'.format(date_range)} } }
                     ]
                 }
             }
         else:
-            query['query'] = { 'match' : { 'company_codes' : companies } }
+            query['query'] = {
+                'bool' : {
+                   'must' : [
+                        { 'match' : { 'company_codes' : companies } },
+                        { 'range' : { 'publication_date' : { 'gte': 'now-{}/d'.format(date_range)} } }
+                    ]
+                }
+            }
 
         res = self.execute_search(query)
         return res['aggregations']['count_per_day']['buckets']
 
-    def term_search(self, keywords, companies, size):
+    def term_search(self, keywords, companies, date_range, size):
         query = {
             "query": { 
                 "bool" : {
                     "must" : [
                        { "multi_match" : { "query": keywords, "fields": [ "title","body"] } },
-                       { "match" : { "company_codes": companies } }
+                       { "match" : { "company_codes": companies } },
+                       { 'range' : { 'publication_date' : { 'gte': 'now-{}/d'.format(date_range)} } }
                     ]
                 }
             },
@@ -87,10 +103,16 @@ class SearchClient():
         return res['hits']['hits']
 
     
-    def company_search(self, companies, size):
+    def company_search(self, companies, date_range, size):
         query = {
-            'query' : { 'match' : { 'company_codes' : companies } },
-            'size' : size
+            'query' : {
+                'bool' : {
+                   'must' : [
+                        { 'match' : { 'company_codes' : companies } },
+                        { 'range' : { 'publication_date' : { 'gte': 'now-{}/d'.format(date_range)} } }
+                    ]
+                }
+            }
         }
 
         res = self.execute_search(query)
