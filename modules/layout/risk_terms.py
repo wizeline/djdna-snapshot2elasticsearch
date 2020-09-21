@@ -9,7 +9,7 @@ container = (
     html.Div([
         html.Label('Percentage of articles with Risk terms', className='mdc-typography--subtitle1 mdc-theme--secondary'),
         html.Div(id='risk-terms-count', className='mdc-layout-grid__inner mdc-typography mdc-theme--on-surface')
-    ])
+    ], style={ 'margin-left' : '44px' })
 )
 
 def get_risk_term_layout(companies, selected_companies, terms, terms_values, term_sentiment_average ):

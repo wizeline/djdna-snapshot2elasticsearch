@@ -10,6 +10,7 @@ Additional scripts are present to create and download snapshots files, as well a
 ## Overview
 #### General view
 <img src="screenshots/main_view.png" align-text="center" width="600" />
+<img src="screenshots/main_view_expanded.png" align-text="center" width="600" />
 
 #### Top hits view
 <img src="screenshots/top_hits.png" align-text="center" width="600" />
