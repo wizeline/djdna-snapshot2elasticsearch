@@ -170,4 +170,4 @@ def update_article_list(selected_companies, search_clicks, load_count_clicks, se
     return ArticleList.create_article_list_layout(article_list)
 
 if __name__ == '__main__':
-	app.run_server()
+	app.run_server(debug=True, host='0.0.0.0')
