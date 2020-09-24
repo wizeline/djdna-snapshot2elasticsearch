@@ -22,6 +22,15 @@ search_bar = (
     ], className='mdc-layout-grid__inner', style={'margin-top' : '25px'})
 )
 
+date_range_filter = (
+    dcc.Tabs([
+        dcc.Tab(label='1 day', value = '1d', className='custom-tab dj-tab'),
+        dcc.Tab(label='1 month', value='1M', className='custom-tab dj-tab'),
+        dcc.Tab(label='6 months', value='6M', className='custom-tab dj-tab'),
+        dcc.Tab(label='1 year', value='1y', className='custom-tab dj-tab'),
+    ], id='date_range_selector', value='1y', className='mdc-divider-bottom')
+)
+
 def create_company_select(companies):
     return html.Div([
         html.Label(

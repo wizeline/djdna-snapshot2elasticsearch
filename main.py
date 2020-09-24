@@ -17,8 +17,8 @@ import modules.layout.article_list as ArticleList
 
 from dash.dependencies import Input, Output, State
 from modules.search_client import SearchClient, SearchError
-from modules.ui.modal import set_toggle_modal, Modal
-
+from modules.ui.modal import set_toggle_modal
+from datetime import date
 
 search_client = SearchClient(config.elasticsearch_host, config.elasticsearch_index)
 
@@ -28,11 +28,14 @@ terms = config.load_terms()
 color_pool = ['navy', 'blue', 'purple', 'pink', 'indigo', 'slateblue', 'turqouise', 'chocolate', 'cyan', 'hotpink']
 
 app.layout = html.Div([
+    Header.logo_header,
     html.Div([
-        Header.logo_header,
         html.Div([
             html.Div([
                 Header.title
+            ], className='mdc-layout-grid__cell--span-12'),
+            html.Div([
+                SearchFilters.date_range_filter
             ], className='mdc-layout-grid__cell--span-12'),
             html.Div([
                 SearchFilters.create_company_select(companies),
@@ -57,12 +60,11 @@ app.layout = html.Div([
 # Set modal callback
 set_toggle_modal(app)
 
-
 @app.callback(
     Output('risk-terms-count', 'children'),
-    [ Input('company-filter', 'value') ]
+    [ Input('company-filter', 'value'), Input('date_range_selector', 'value') ]
 )
-def get_risk_term_section(selected_companies):
+def get_risk_term_section(selected_companies, selected_date_range):
     if isinstance(selected_companies, str):
         selected_companies = [ selected_companies ]
 
@@ -77,7 +79,7 @@ def get_risk_term_section(selected_companies):
         term_values = [ search_client.term_count(term, companies_to_search)*100/total_articles for term in terms ]
 
         sentiment_average = [ 
-            search_client.get_term_sentiment_average_per_company(term, selected_companies) for term in terms
+            search_client.get_term_sentiment_average_per_company(term, selected_companies, selected_date_range) for term in terms
         ]
 
         return RiskTerms.get_risk_term_layout(companies, selected_companies, terms, term_values, sentiment_average)
@@ -87,10 +89,10 @@ def get_risk_term_section(selected_companies):
    
 @app.callback(
     Output('article_count_graph', 'figure'), 
-    [ Input('company-filter', 'value'), Input('search_button', 'n_clicks') ],
+    [ Input('company-filter', 'value'), Input('search_button', 'n_clicks'), Input('date_range_selector', 'value') ],
     [ State('search_input', 'value') ]
 )
-def update_figure(selected_companies, n_clicks, search_terms):
+def update_figure(selected_companies, n_clicks, selected_date_range, search_terms):
     if isinstance(selected_companies, str):
         selected_companies = [ selected_companies ]
 
@@ -99,7 +101,7 @@ def update_figure(selected_companies, n_clicks, search_terms):
     fig = go.Figure(layout=go.Layout(dragmode='pan'))
 
     try:
-        article_count = search_client.get_article_count_per_day(companies_to_search, None)   
+        article_count = search_client.get_article_count_per_day(companies_to_search, selected_date_range, None)   
     except SearchError:
         return fig
 
@@ -107,11 +109,16 @@ def update_figure(selected_companies, n_clicks, search_terms):
     fig.add_trace(
         go.Bar( x=formatted_data['date'], y=formatted_data['count'], name='Total articles')
     )
+    
+    if len(formatted_data) > 0:
+        start_date = min(formatted_data['date'])
+    else:
+        start_date = date.today()
 
     # Get the stock information
     for index, company in enumerate(selected_companies):
         if 'ticker' in companies[company]:
-            company_stocks = stock_client.get_ticker_stocks(companies[company]['ticker'])
+            company_stocks = stock_client.get_ticker_stocks(companies[company]['ticker'], start_date)
             fig.add_trace(
                 go.Scatter(
                     x=data_handling.transform_dates(company_stocks.index.values), 
@@ -124,7 +131,7 @@ def update_figure(selected_companies, n_clicks, search_terms):
 
     if search_terms:
         try:
-            search_term_article_count = search_client.get_article_count_per_day(companies_to_search, search_terms)
+            search_term_article_count = search_client.get_article_count_per_day(companies_to_search, selected_date_range, search_terms)
         except SearchError:
             return fig
 
@@ -142,10 +149,11 @@ def update_figure(selected_companies, n_clicks, search_terms):
 
 @app.callback(
     Output('article_list', 'children'),
-    [ Input('company-filter', 'value'), Input('search_button', 'n_clicks'), Input('load_more_button', 'n_clicks') ],
+    [ Input('company-filter', 'value'), Input('search_button', 'n_clicks'), 
+        Input('load_more_button', 'n_clicks'), Input('date_range_selector', 'value') ],
     [ State('search_input', 'value') ]
 )
-def update_article_list(selected_companies, search_clicks, load_count_clicks, search_terms):
+def update_article_list(selected_companies, search_clicks, load_count_clicks, selected_date_range, search_terms):
     if isinstance(selected_companies, str):
         selected_companies = [ selected_companies ]
 
@@ -160,13 +168,16 @@ def update_article_list(selected_companies, search_clicks, load_count_clicks, se
 
     try:
         if search_terms is None:
-            article_list = search_client.company_search(companies_to_search, articles_to_load)
+            article_list = search_client.company_search(companies_to_search, selected_date_range, articles_to_load)
         else:
-            article_list = search_client.term_search(search_terms, companies_to_search, articles_to_load)
+            article_list = search_client.term_search(search_terms, companies_to_search, selected_date_range, articles_to_load)
         
     except SearchError:
         return 'An error ocurred'
-    
+
+    if len(article_list) == 0:
+        return 'No articles found'
+        
     return ArticleList.create_article_list_layout(article_list)
 
 if __name__ == '__main__':

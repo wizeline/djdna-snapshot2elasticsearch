@@ -1,5 +1,5 @@
 import yfinance as yf
 
-def get_ticker_stocks(ticker):
+def get_ticker_stocks(ticker, start_date):
     ticker = yf.Ticker(ticker)
-    return ticker.history(start="2019-01-01")
+    return ticker.history(start=start_date)
