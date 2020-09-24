@@ -112,7 +112,8 @@ class SearchClient():
                         { 'range' : { 'publication_date' : { 'gte': 'now-{}/d'.format(date_range)} } }
                     ]
                 }
-            }
+            },
+            'size' : size
         }
 
         res = self.execute_search(query)

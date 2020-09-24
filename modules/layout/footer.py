@@ -3,7 +3,7 @@ import dash_html_components as html
 footer = (
     html.Div([
         html.Div([
-            html.P('At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum schmidt.', className='mdc-typography')
+            html.P('This app and the information contained herein is not intended to be a source of investment advice or credit analysis with respect to the material presented; it is intended to be used and must be used for informational purposes only. None of the authors, contributors, administrators or anyone else connected with Dow Jones, in any way whatsoever, can be responsible for your use of the information contained in or linked from this app.', className='mdc-typography')
         ], className='mdc-layout-grid__cell--span-10'),
         html.Div([
             html.A([
