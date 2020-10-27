@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: djdna-snapshots-demo
+  namespace: default
+  labels:
+    app: djdna-snapshots
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: djdna-snapshots
+  template:
+    metadata:
+      labels:
+        app: djdna-snapshots
+    spec:
+      containers:
+      - name: djdna-snapshots
+        image: gcr.io/PROJECT_ID/IMAGE:TAG
+        ports:
+          - containerPort: 8050
